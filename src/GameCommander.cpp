@@ -72,7 +72,10 @@ void GameCommander::setValidUnits()
     // make sure the unit is completed and alive and usable
     for (auto & unit : m_bot.UnitInfo().getUnits(Players::Self))
     {
-        m_validUnits.push_back(unit);
+		if (unit.isAlive() && !unit.getType().isBuilding())
+		{
+			m_validUnits.push_back(unit);
+		}
     }
 }
 
