@@ -184,3 +184,17 @@ bool Util::UnitCanMetaTypeNow(const Unit & unit, const UnitType & type, CCBot & 
     }
     return false;
 }
+
+#ifndef LADDEREXE
+std::string Util::ExePath()
+{
+	return ".";
+}
+#else
+extern std::string fileName;
+extern std::string filePath;
+std::string Util::ExePath()
+{
+	return filePath + "\\Data\\" + fileName;
+}
+#endif
