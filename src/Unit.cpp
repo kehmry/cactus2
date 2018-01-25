@@ -116,6 +116,12 @@ bool Unit::isTraining() const
     return m_unit->orders.size() > 0;
 }
 
+bool Unit::isVisible() const
+{
+	BOT_ASSERT(isValid(), "Unit is not valid");
+	return m_bot->Observation()->GetUnit(m_unit->tag) && m_bot->Observation()->GetUnit(m_unit->tag)->display_type==sc2::Unit::DisplayType::Visible;
+}
+
 bool Unit::isBeingConstructed() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");

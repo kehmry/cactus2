@@ -10,6 +10,10 @@ UnitData::UnitData()
 
 void UnitData::updateUnit(const Unit & unit)
 {
+	if (!unit.isVisible())
+	{
+		return;
+	}
     bool firstSeen = false;
     const auto & it = m_unitMap.find(unit);
     if (it == m_unitMap.end())
@@ -17,7 +21,6 @@ void UnitData::updateUnit(const Unit & unit)
         firstSeen = true;
         m_unitMap[unit] = UnitInfo();
     }
-
     UnitInfo & ui   = m_unitMap[unit];
     ui.unit         = unit;
     ui.player       = unit.getPlayer();
@@ -39,6 +42,11 @@ void UnitData::updateUnit(const Unit & unit)
     }
 }
 
+void UnitData::lostUnit(const Unit & unit)
+{
+	UnitInfo & ui = m_unitMap[unit];
+	ui.lastPosition = CCPosition();
+}
 void UnitData::killUnit(const Unit & unit)
 {
     //_mineralsLost += unit->getType().mineralPrice();
@@ -67,7 +75,7 @@ void UnitData::removeBadUnits()
 
 bool UnitData::badUnitInfo(const UnitInfo & ui) const
 {
-    return false;
+    return !ui.unit.isAlive();
 }
 
 int UnitData::getGasLost() const

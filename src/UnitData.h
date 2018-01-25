@@ -62,7 +62,8 @@ public:
     UnitData();
 
     void	updateUnit(const Unit & unit);
-    void	killUnit(const Unit & unit);
+	void	lostUnit(const Unit & unit);
+	void	killUnit(const Unit & unit);
     void	removeBadUnits();
 
     int		getGasLost()                                const;

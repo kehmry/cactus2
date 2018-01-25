@@ -40,7 +40,8 @@ public:
     bool DrawModuleTimers;
     bool DrawReservedBuildingTiles;
     bool DrawBuildingInfo;
-    bool DrawEnemyUnitInfo;
+	bool DrawSelfUnitInfo;
+	bool DrawEnemyUnitInfo;
     bool DrawLastSeenTileInfo;
     bool DrawUnitTargetInfo;
     bool DrawSquadInfo;		

@@ -19,6 +19,8 @@ class UnitInfoManager
     
     const UnitData &        getUnitData(CCPlayer player) const;
 
+	void checkPositions(const int player);
+
     void drawSelectedUnitDebugInfo();
 
 public:
@@ -37,6 +39,6 @@ public:
     const std::map<Unit, UnitInfo> & getUnitInfoMap(CCPlayer player) const;
 
     //bool                  enemyHasCloakedUnits() const;
-    void                    drawUnitInformation(float x, float y) const;
+    void                    drawUnitInformation() const;
 
 };

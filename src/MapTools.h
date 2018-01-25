@@ -62,6 +62,7 @@ public:
     bool    isValidPosition(const CCPosition & pos) const;
     bool    isPowered(int tileX, int tileY) const;
     bool    isExplored(int tileX, int tileY) const;
+	bool	isVisible(const CCTilePosition & tile) const;
     bool    isExplored(const CCPosition & pos) const;
     bool    isExplored(const CCTilePosition & pos) const;
     bool    isVisible(int tileX, int tileY) const;

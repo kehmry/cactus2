@@ -182,6 +182,10 @@ bool MapTools::isExplored(int tileX, int tileY) const
     sc2::Visibility vis = m_bot.Observation()->GetVisibility(CCPosition(tileX + HALF_TILE, tileY + HALF_TILE));
     return vis == sc2::Visibility::Fogged || vis == sc2::Visibility::Visible;
 }
+bool MapTools::isVisible(const CCTilePosition & tile) const
+{
+	return isVisible(tile.x, tile.y);
+}
 
 bool MapTools::isVisible(int tileX, int tileY) const
 {
@@ -300,18 +304,18 @@ void MapTools::drawBox(const CCPosition & tl, const CCPosition & br, const CCCol
 
 void MapTools::drawCircle(const CCPosition & pos, CCPositionType radius, const CCColor & color) const
 {
-    m_bot.Debug()->DebugSphereOut(sc2::Point3D(pos.x, pos.y, m_maxZ), radius, color);
+    m_bot.Debug()->DebugSphereOut(sc2::Point3D(pos.x, pos.y, terrainHeight(pos)), radius, color);
 }
 
 void MapTools::drawCircle(CCPositionType x, CCPositionType y, CCPositionType radius, const CCColor & color) const
 {
-    m_bot.Debug()->DebugSphereOut(sc2::Point3D(x, y, m_maxZ), radius, color);
+    m_bot.Debug()->DebugSphereOut(sc2::Point3D(x, y, terrainHeight(x,y)), radius, color);
 }
 
 
 void MapTools::drawText(const CCPosition & pos, const std::string & str, const CCColor & color) const
 {
-    m_bot.Debug()->DebugTextOut(str, sc2::Point3D(pos.x, pos.y, m_maxZ), color);
+    m_bot.Debug()->DebugTextOut(str, sc2::Point3D(pos.x, pos.y, terrainHeight(pos)), color);
 }
 
 void MapTools::drawTextScreen(float xPerc, float yPerc, const std::string & str, const CCColor & color) const

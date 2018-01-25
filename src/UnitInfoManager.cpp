@@ -19,7 +19,7 @@ void UnitInfoManager::onStart()
 void UnitInfoManager::onFrame()
 {
     updateUnitInfo();
-    drawUnitInformation(100, 100);
+    drawUnitInformation();
     drawSelectedUnitDebugInfo();
 }
 
@@ -39,6 +39,9 @@ void UnitInfoManager::updateUnitInfo()
     m_unitData[Players::Self].removeBadUnits();
     m_unitData[Players::Enemy].removeBadUnits();
     m_unitData[Players::Neutral].removeBadUnits();
+
+	// check last known position
+	checkPositions(Players::Enemy);
 }
 
 const std::map<Unit, UnitInfo> & UnitInfoManager::getUnitInfoMap(CCPlayer player) const
@@ -64,7 +67,6 @@ const std::vector<Unit> & UnitInfoManager::getUnits(CCPlayer player) const
 
 void UnitInfoManager::drawSelectedUnitDebugInfo()
 {
-//#ifdef SC2API
 //    const sc2::Unit * unit;
 //    for (auto u : m_bot.Observation()->GetUnits()) 
 //    {
@@ -175,7 +177,6 @@ void UnitInfoManager::drawSelectedUnitDebugInfo()
 //        m_bot.Map().drawCircle(target, 1.25f, CCColor(0, 0, 255));
 //        m_bot.Map().drawText(p1, target_info, CCColor(255, 255, 0));
 //    }
-//#endif
 }
 
 // passing in a unit type of 0 returns a count of all units
@@ -194,14 +195,30 @@ size_t UnitInfoManager::getUnitTypeCount(CCPlayer player, UnitType type, bool co
     return count;
 }
 
-void UnitInfoManager::drawUnitInformation(float x,float y) const
+void UnitInfoManager::drawUnitInformation() const
 {
-    if (!m_bot.Config().DrawEnemyUnitInfo)
-    {
-        return;
-    }
+	if (m_bot.Config().DrawEnemyUnitInfo)
+	{
+		for (auto & kv : getUnitData(Players::Enemy).getUnitInfoMap())
+		{
+			if (CCPosition()==kv.second.lastPosition)
+			{
+				continue;
+			}
+			m_bot.Map().drawCircle(kv.second.lastPosition, kv.first.getUnitPtr()->radius,sc2::Colors::Red);
+			m_bot.Map().drawText(kv.second.lastPosition - CCPosition(0.0f, kv.first.getUnitPtr()->radius), sc2::UnitTypeToName(kv.second.type.getAPIUnitType()));
+		}
+	}
+	if (m_bot.Config().DrawSelfUnitInfo)
+	{
+		for (auto & kv : getUnitData(Players::Self).getUnitInfoMap())
+		{
+			m_bot.Map().drawCircle(kv.second.lastPosition, kv.first.getUnitPtr()->radius, sc2::Colors::Green);
+			m_bot.Map().drawText(kv.second.lastPosition - CCPosition(0.0f, kv.first.getUnitPtr()->radius), sc2::UnitTypeToName(kv.second.type.getAPIUnitType()));
+		}
+	}
 
-    std::stringstream ss;
+    //std::stringstream ss;
 
     // TODO: move this to unitData
 
@@ -216,12 +233,6 @@ void UnitInfoManager::drawUnitInformation(float x,float y) const
     //    {
     //        ss << numUnits << "   " << numDeadUnits << "   " << sc2::UnitTypeToName(t) << "\n";
     //    }
-    //}
-    //
-    //for (auto & kv : getUnitData(Players::Enemy).getUnitInfoMap())
-    //{
-    //    m_bot.Map().drawCircle(kv.second.lastPosition, 0.5f);
-    //    m_bot.Map().drawText(kv.second.lastPosition, sc2::UnitTypeToName(kv.second.type));
     //}
     //
 }
@@ -273,4 +284,29 @@ void UnitInfoManager::getNearbyForce(std::vector<UnitInfo> & unitInfo, CCPositio
 const UnitData & UnitInfoManager::getUnitData(CCPlayer player) const
 {
     return m_unitData.find(player)->second;
+}
+
+void UnitInfoManager::checkPositions(const int player)
+{
+	for (const auto & kv : getUnitData(player).getUnitInfoMap())
+	{
+		//If the last known position is visible
+		if (m_bot.Map().isVisible(kv.first.getTilePosition()))
+		{
+			//And the unit is not visible
+			if (!kv.first.isVisible())
+			{
+				//A building is probably dead
+				if (kv.second.type.isBuilding())
+				{
+					m_unitData[kv.first.getPlayer()].killUnit(kv.first);
+				}
+				//for units we just lost the position
+				else
+				{
+					m_unitData[kv.first.getPlayer()].lostUnit(kv.first);
+				}
+			}
+		}
+	}
 }
