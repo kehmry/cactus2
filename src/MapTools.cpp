@@ -67,8 +67,8 @@ void MapTools::onStart()
 
         int width = resource.getType().tileWidth();
         int height = resource.getType().tileHeight();
-        int tileX = std::floor(resource.getPosition().x) - (width / 2);
-        int tileY = std::floor(resource.getPosition().y) - (height / 2);
+        int tileX = static_cast<int>(std::floor(resource.getPosition().x) - (width / 2.0));
+        int tileY = static_cast<int>(std::floor(resource.getPosition().y) - (height / 2.0));
 
         if (!isVisible(resource.getTilePosition().x, resource.getTilePosition().y))
         {

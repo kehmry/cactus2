@@ -8,7 +8,7 @@
     
     "SC2API" :
     {
-        "BotRace"                   : "Protoss",
+        "BotRace"                   : "Zerg",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "InterloperLE.SC2Map",
@@ -55,7 +55,7 @@
     {
         "Protoss"                   : "Protoss_ZealotRush",
         "Terran"                    : "Terran_MarineRush",
-        "Zerg"                      : "Zerg_2HatchRoach",
+        "Zerg"                      : "Zerg_ZerglingRush",
         
         "ScoutHarassEnemy"          : true,
         

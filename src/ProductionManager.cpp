@@ -123,7 +123,7 @@ void ProductionManager::fixBuildOrderDeadlock()
     bool hasProducer = m_bot.Data(currentItem.type).whatBuilds.empty();
     for (auto & producer : m_bot.Data(currentItem.type).whatBuilds)
     {
-        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, producer, false) > 0 || m_buildingManager.isBeingBuilt(producer))
+        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, producer, false) > 0 || m_buildingManager.isBeingBuilt(producer) || producer.isLarva())
         {
             hasProducer = true;
             break;

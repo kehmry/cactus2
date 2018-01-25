@@ -57,6 +57,12 @@ CCTilePosition Unit::getTilePosition() const
     return Util::GetTilePosition(m_unit->pos);
 }
 
+CCHealth Unit::getTotalHealth() const
+{
+	BOT_ASSERT(isValid(), "Unit is not valid");
+	return m_unit->health + m_unit->shield;
+}
+
 CCHealth Unit::getHitPoints() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");

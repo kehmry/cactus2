@@ -53,7 +53,7 @@ void ScoutManager::moveScouts()
     auto workerScout = m_scoutUnit;
     if (!workerScout.isValid()) { return; }
 
-    CCHealth scoutHP = workerScout.getHitPoints() + workerScout.getShields();
+    CCHealth scoutHP = workerScout.getTotalHealth();
 
     // get the enemy base location, if we have one
     const BaseLocation * enemyBaseLocation = m_bot.Bases().getPlayerStartingBaseLocation(Players::Enemy);
