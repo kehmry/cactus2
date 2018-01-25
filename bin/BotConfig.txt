@@ -5,18 +5,10 @@
         "Authors"                   : "David Churchill",
         "PrintInfoOnStart"          : false
     },
-
-    "BWAPI" : 
-    {
-        "SetLocalSpeed"             : 5,
-        "SetFrameSkip"              : 0,
-        "UserInput"                 : true,
-        "CompleteMapInformation"    : false
-    },
     
     "SC2API" :
     {
-        "BotRace"                   : "Terran",
+        "BotRace"                   : "Protoss",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "InterloperLE.SC2Map",
@@ -57,47 +49,6 @@
     "Modules" :
     {
         "UseAutoObserver"           : false
-    },
-    
-    "BWAPI Strategy" :
-    {
-        "Protoss"                   : "Protoss_ZealotRush",
-        "Terran"                    : "Terran_MarineRush",
-        "Zerg"                      : "Zerg_ZerglingRush",
-        
-        "ScoutHarassEnemy"          : true,
-        
-        "Strategies" :
-        {
-            "Protoss_ZealotRush"    : 
-            { 
-                "Race"              : "Protoss", 
-                "OpeningBuildOrder" : ["Probe", "Probe", "Probe", "Probe", "Pylon", "Probe", "Gateway", "Gateway", "Probe", "Probe", "Zealot", "Pylon", "Zealot", "Zealot",  "Probe", "Zealot", "Zealot", "Probe", "Pylon", "Zealot", "Gateway", "Probe", "Pylon", "Probe", "Zealot", "Probe", "Zealot", "Zealot", "Zealot", "Zealot", "Pylon", "Probe", "Zealot", "Zealot", "Zealot" ],
-                "ScoutCondition"    : [ ["Self", "Pylon"], ">", [ 0 ] ],
-                "AttackCondition"   : [ ["Self", "Zealot"], ">=", [ 3 ] ]
-            },
-            "Protoss_DragoonRush"   : 
-            { 
-                "Race"              : "Protoss", 
-                "OpeningBuildOrder" : ["Probe", "Probe", "Probe", "Probe", "Pylon", "Probe", "Probe", "Gateway", "Probe", "Assimilator", "Probe", "Probe", "Cybernetics_Core", "Probe", "Probe", "Gateway", "Singularity_Charge", "Dragoon", "Gateway", "Pylon", "Dragoon", "Dragoon", "Probe", "Gateway", "Pylon", "Probe", "Dragoon", "Dragoon", "Dragoon"],
-                "ScoutCondition"    : [ ["Self", "Pylon"], ">", [ 0 ] ],
-                "AttackCondition"   : [ ["Self", "Dragoon"], ">=", [ 3 ] ]
-            },
-            "Terran_MarineRush"     : 
-            { 
-                "Race"              : "Terran",  
-                "OpeningBuildOrder" : ["SCV", "SCV", "SCV", "SCV", "Barracks", "Barracks", "SCV", "Supply Depot", "SCV", "Marine", "Marine", "Marine", "Marine", "Supply Depot"], 
-                "ScoutCondition"    : [ ["Self", "Supply Depot"], ">", [ 0 ] ],
-                "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 4 ] ]
-            },
-            "Zerg_ZerglingRush"     : 
-            { 
-                "Race"              : "Zerg",    
-                "OpeningBuildOrder" : ["Drone", "Spawning Pool", "Zergling", "Zergling", "Zergling", "Zergling"],
-                "ScoutCondition"    : [ ["Self", "Spawning Pool"], ">", [ 0 ] ],
-                "AttackCondition"   : [ ["Self", "Zergling"], ">=", [ 0 ] ]
-            }
-        }
     },
     
     "SC2API Strategy" :

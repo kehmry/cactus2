@@ -107,11 +107,7 @@ void StrategyManager::readStrategyFile(const std::string & filename)
     json j;
     file >> j;
 
-#ifdef SC2API
     const char * strategyObject = "SC2API Strategy";
-#else
-    const char * strategyObject = "BWAPI Strategy";
-#endif
 
     // Parse the Strategy Options
     if (j.count(strategyObject) && j[strategyObject].is_object())

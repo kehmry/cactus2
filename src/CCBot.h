@@ -14,11 +14,7 @@
 #include "MetaType.h"
 #include "Unit.h"
 
-#ifdef SC2API
 class CCBot : public sc2::Agent 
-#else
-class CCBot
-#endif
 {
     MapTools                m_map;
     BaseLocationManager     m_bases;
@@ -34,22 +30,15 @@ class CCBot
 
     void setUnits();
 
-#ifdef SC2API
     void OnError(const std::vector<sc2::ClientError> & client_errors, 
                  const std::vector<std::string> & protocol_errors = {}) override;
-#endif
 
 public:
 
     CCBot();
 
-#ifdef SC2API
     void OnGameStart() override;
     void OnStep() override;
-#else
-    void OnGameStart();
-    void OnStep();
-#endif
 
           BotConfig & Config();
           WorkerManager & Workers();

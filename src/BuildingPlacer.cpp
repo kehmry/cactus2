@@ -264,11 +264,7 @@ CCTilePosition BuildingPlacer::getRefineryPosition()
         }
     }
 
-#ifdef SC2API
     return CCTilePosition((int)closestGeyser.x, (int)closestGeyser.y);
-#else
-    return CCTilePosition(closestGeyser);
-#endif
 }
 
 bool BuildingPlacer::isReserved(int x, int y) const

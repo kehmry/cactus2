@@ -18,7 +18,6 @@ void TechTree::onStart()
 }
 
 
-#ifdef SC2API
 void TechTree::initUnitTypeData()
 {
     m_unitTypeData[UnitType(0, m_bot)] = TypeData();
@@ -267,49 +266,6 @@ void TechTree::initUpgradeData()
     m_upgradeData[sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2] =          { sc2::Race::Zerg, 150, 150, 0, 3040, false, false, false, false, false, false, false, sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONSLEVEL2, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_EVOLUTIONCHAMBER, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_LAIR, m_bot), UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) }, {sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL1} };
     m_upgradeData[sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL3] =          { sc2::Race::Zerg, 200, 200, 0, 3520, false, false, false, false, false, false, false, sc2::ABILITY_ID::RESEARCH_ZERGMISSILEWEAPONSLEVEL3, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_EVOLUTIONCHAMBER, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) }, {sc2::UPGRADE_ID::ZERGMISSILEWEAPONSLEVEL2} };
 }
-#else
-void TechTree::initUpgradeData()
-{
-    
-    m_unitTypeData[UnitType(BWAPI::UnitTypes::None, m_bot)] = TypeData();
-
-    for (auto & type : BWAPI::UnitTypes::allUnitTypes())
-    {
-        TypeData typeData;
-
-        typeData.race = type.getRace();
-        typeData.mineralCost = type.mineralPrice();
-        typeData.gasCost = type.gasPrice();
-        typeData.supplyCost = type.supplyRequired();
-        typeData.buildTime = type.buildTime();
-        typeData.isUnit = true;
-        typeData.isBuilding = type.isBuilding();
-        typeData.isWorker = type.isWorker();
-        typeData.isRefinery = type.isRefinery();
-        typeData.isSupplyProvider = type.supplyProvided() > 0 && !type.isResourceDepot();
-        typeData.isResourceDepot = type.isResourceDepot();
-        typeData.isAddon = type.isAddon();
-
-        std::vector<UnitType> whatBuilds;
-        whatBuilds.push_back(UnitType(type.whatBuilds().first, m_bot));
-        typeData.whatBuilds = whatBuilds;
-
-        std::vector<UnitType> requiredUnits;
-        for (auto & req : type.requiredUnits())
-        {
-            requiredUnits.push_back(UnitType(req.first, m_bot));
-        }
-        typeData.requiredUnits = requiredUnits;
-
-        m_unitTypeData[UnitType(type, m_bot)] = typeData;
-    }
-}
-
-void TechTree::initUnitTypeData()
-{
-
-}
-#endif
 
 const TypeData & TechTree::getData(const UnitType & type) const
 {

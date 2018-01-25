@@ -8,25 +8,15 @@ class UnitType
 {
     mutable CCBot * m_bot;
     
-#ifdef SC2API
     sc2::UnitTypeID m_type;
-#else
-    BWAPI::UnitType m_type;
-#endif
 
 public:
 
     UnitType();
 
-#ifdef SC2API
     UnitType(const sc2::UnitTypeID & type, CCBot & bot);
     sc2::UnitTypeID getAPIUnitType() const;
     bool is(const sc2::UnitTypeID & type) const;
-#else
-    UnitType(const BWAPI::UnitType & type, CCBot & bot);
-    BWAPI::UnitType getAPIUnitType() const;
-    bool is(const BWAPI::UnitType & type) const;
-#endif
 
     bool operator < (const UnitType & rhs) const;
     bool operator == (const UnitType & rhs) const;

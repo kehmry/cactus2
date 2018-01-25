@@ -15,11 +15,7 @@ typedef std::vector<std::vector<bool>> vvb;
 typedef std::vector<std::vector<int>>  vvi;
 typedef std::vector<std::vector<float>>  vvf;
 
-#ifdef SC2API
     #define HALF_TILE 0.5f
-#else
-    #define HALF_TILE 0
-#endif
 
 // constructor for MapTools
 MapTools::MapTools(CCBot & bot)
@@ -34,13 +30,8 @@ MapTools::MapTools(CCBot & bot)
 
 void MapTools::onStart()
 {
-#ifdef SC2API
     m_width  = m_bot.Observation()->GetGameInfo().width;
     m_height = m_bot.Observation()->GetGameInfo().height;
-#else
-    m_width  = BWAPI::Broodwar->mapWidth();
-    m_height = BWAPI::Broodwar->mapHeight();
-#endif
 
     m_walkable       = vvb(m_width, std::vector<bool>(m_height, true));
     m_buildable      = vvb(m_width, std::vector<bool>(m_height, false));
@@ -61,7 +52,6 @@ void MapTools::onStart()
         }
     }
 
-#ifdef SC2API
     for (auto & unit : m_bot.Observation()->GetUnits())
     {
         m_maxZ = std::max(unit->pos.z, m_maxZ);
@@ -105,44 +95,6 @@ void MapTools::onStart()
             }
         }
     }
-#else
-
-    // set tiles that static resources are on as unbuildable
-    for (auto & resource : BWAPI::Broodwar->getStaticNeutralUnits())
-    {
-        if (!resource->getType().isResourceContainer())
-        {
-            continue;
-        }
-
-        int tileX = resource->getTilePosition().x;
-        int tileY = resource->getTilePosition().y;
-
-        for (int x=tileX; x<tileX+resource->getType().tileWidth(); ++x)
-        {
-            for (int y=tileY; y<tileY+resource->getType().tileHeight(); ++y)
-            {
-                m_buildable[x][y] = false;
-
-                // depots can't be built within 3 tiles of any resource
-                for (int rx=-3; rx<=3; rx++)
-                {
-                    for (int ry=-3; ry<=3; ry++)
-                    {
-                        if (!BWAPI::TilePosition(x+rx, y+ry).isValid())
-                        {
-                            continue;
-                        }
-
-                        m_depotBuildable[x+rx][y+ry] = false;
-                    }
-                }
-            }
-        }
-    }
-
-#endif
-
     computeConnectivity();
 }
 
@@ -227,28 +179,19 @@ bool MapTools::isExplored(int tileX, int tileY) const
 {
     if (!isValidTile(tileX, tileY)) { return false; }
 
-#ifdef SC2API
     sc2::Visibility vis = m_bot.Observation()->GetVisibility(CCPosition(tileX + HALF_TILE, tileY + HALF_TILE));
     return vis == sc2::Visibility::Fogged || vis == sc2::Visibility::Visible;
-#else
-    return BWAPI::Broodwar->isExplored(tileX, tileY);
-#endif
 }
 
 bool MapTools::isVisible(int tileX, int tileY) const
 {
     if (!isValidTile(tileX, tileY)) { return false; }
 
-#ifdef SC2API
     return m_bot.Observation()->GetVisibility(CCPosition(tileX + HALF_TILE, tileY + HALF_TILE)) == sc2::Visibility::Visible;
-#else
-    return BWAPI::Broodwar->isVisible(BWAPI::TilePosition(tileX, tileY));
-#endif
 }
 
 bool MapTools::isPowered(int tileX, int tileY) const
 {
-#ifdef SC2API
     for (auto & powerSource : m_bot.Observation()->GetPowerSources())
     {
         if (Util::Dist(CCPosition(tileX + HALF_TILE, tileY + HALF_TILE), powerSource.position) < powerSource.radius)
@@ -258,9 +201,6 @@ bool MapTools::isPowered(int tileX, int tileY) const
     }
 
     return false;
-#else
-    return BWAPI::Broodwar->hasPower(BWAPI::TilePosition(tileX, tileY));
-#endif
 }
 
 float MapTools::terrainHeight(float x, float y) const
@@ -328,20 +268,12 @@ bool MapTools::isValidPosition(const CCPosition & pos) const
 
 void MapTools::drawLine(CCPositionType x1, CCPositionType y1, CCPositionType x2, CCPositionType y2, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugLineOut(sc2::Point3D(x1, y1, terrainHeight(x1, y1) + 0.2f), sc2::Point3D(x2, y2, terrainHeight(x2, y2) + 0.2f), color);
-#else
-    BWAPI::Broodwar->drawLineMap(BWAPI::Position(x1, y1), BWAPI::Position(x2, y2), color);
-#endif
 }
 
 void MapTools::drawLine(const CCPosition & p1, const CCPosition & p2, const CCColor & color) const
 {
-#ifdef SC2API
     drawLine(p1.x, p1.y, p2.x, p2.y, color);
-#else
-    BWAPI::Broodwar->drawLineMap(p1, p2, color);
-#endif
 }
 
 void MapTools::drawTile(int tileX, int tileY, const CCColor & color) const
@@ -358,60 +290,33 @@ void MapTools::drawTile(int tileX, int tileY, const CCColor & color) const
 
 void MapTools::drawBox(CCPositionType x1, CCPositionType y1, CCPositionType x2, CCPositionType y2, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugBoxOut(sc2::Point3D(x1, y1, m_maxZ + 2.0f), sc2::Point3D(x2, y2, m_maxZ-5.0f), color);
-#else
-    drawLine(x1, y1, x1, y2, color);
-    drawLine(x1, y2, x2, y2, color);
-    drawLine(x2, y2, x2, y1, color);
-    drawLine(x2, y1, x1, y1, color);
-#endif
 }
 
 void MapTools::drawBox(const CCPosition & tl, const CCPosition & br, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugBoxOut(sc2::Point3D(tl.x, tl.y, m_maxZ + 2.0f), sc2::Point3D(br.x, br.y, m_maxZ-5.0f), color);
-#else
-    drawBox(tl.x, tl.y, br.x, br.y, color);
-#endif
 }
 
 void MapTools::drawCircle(const CCPosition & pos, CCPositionType radius, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugSphereOut(sc2::Point3D(pos.x, pos.y, m_maxZ), radius, color);
-#else
-    BWAPI::Broodwar->drawCircleMap(pos, radius, color);
-#endif
 }
 
 void MapTools::drawCircle(CCPositionType x, CCPositionType y, CCPositionType radius, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugSphereOut(sc2::Point3D(x, y, m_maxZ), radius, color);
-#else
-    BWAPI::Broodwar->drawCircleMap(BWAPI::Position(x, y), radius, color);
-#endif
 }
 
 
 void MapTools::drawText(const CCPosition & pos, const std::string & str, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugTextOut(str, sc2::Point3D(pos.x, pos.y, m_maxZ), color);
-#else
-    BWAPI::Broodwar->drawTextMap(pos, str.c_str());
-#endif
 }
 
 void MapTools::drawTextScreen(float xPerc, float yPerc, const std::string & str, const CCColor & color) const
 {
-#ifdef SC2API
     m_bot.Debug()->DebugTextOut(str, CCPosition(xPerc, yPerc), color);
-#else
-    BWAPI::Broodwar->drawTextScreen(BWAPI::Position((int)(640*xPerc), (int)(480*yPerc)), str.c_str());
-#endif
 }
 
 bool MapTools::isConnected(int x1, int y1, int x2, int y2) const
@@ -449,11 +354,7 @@ bool MapTools::isBuildable(int tileX, int tileY) const
 
 bool MapTools::canBuildTypeAtPosition(int tileX, int tileY, const UnitType & type) const
 {
-#ifdef SC2API
     return m_bot.Query()->Placement(m_bot.Data(type).buildAbility, CCPosition((float)tileX, (float)tileY));
-#else
-    return BWAPI::Broodwar->canBuildHere(BWAPI::TilePosition(tileX, tileY), type.getAPIUnitType());
-#endif
 }
 
 bool MapTools::isBuildable(const CCTilePosition & tile) const
@@ -542,7 +443,6 @@ CCTilePosition MapTools::getLeastRecentlySeenTile() const
 
 bool MapTools::canWalk(int tileX, int tileY) 
 {
-#ifdef SC2API
     auto & info = m_bot.Observation()->GetGameInfo();
     sc2::Point2DI pointI(tileX, tileY);
     if (pointI.x < 0 || pointI.x >= info.width || pointI.y < 0 || pointI.y >= info.width)
@@ -554,25 +454,10 @@ bool MapTools::canWalk(int tileX, int tileY)
     unsigned char encodedPlacement = info.pathing_grid.data[pointI.x + ((info.height - 1) - pointI.y) * info.width];
     bool decodedPlacement = encodedPlacement == 255 ? false : true;
     return decodedPlacement;
-#else
-    for (int i=0; i<4; ++i)
-    {
-        for (int j=0; j<4; ++j)
-        {
-            if (!BWAPI::Broodwar->isWalkable(tileX*4 + i, tileY*4 + j))
-            {
-                return false;
-            }
-        }
-    }
-
-    return true;
-#endif
 }
 
 bool MapTools::canBuild(int tileX, int tileY) 
 {
-#ifdef SC2API
     auto & info = m_bot.Observation()->GetGameInfo();
     sc2::Point2DI pointI(tileX, tileY);
     if (pointI.x < 0 || pointI.x >= info.width || pointI.y < 0 || pointI.y >= info.width)
@@ -584,14 +469,10 @@ bool MapTools::canBuild(int tileX, int tileY)
     unsigned char encodedPlacement = info.placement_grid.data[pointI.x + ((info.height - 1) - pointI.y) * info.width];
     bool decodedPlacement = encodedPlacement == 255 ? true : false;
     return decodedPlacement;
-#else
-    return BWAPI::Broodwar->isBuildable(BWAPI::TilePosition(tileX, tileY));
-#endif
 }
 
 float MapTools::terrainHeight(const CCPosition & point) const
 {
-#ifdef SC2API
     auto & info = m_bot.Observation()->GetGameInfo();
     sc2::Point2DI pointI((int)point.x, (int)point.y);
     if (pointI.x < 0 || pointI.x >= info.width || pointI.y < 0 || pointI.y >= info.width)
@@ -603,28 +484,16 @@ float MapTools::terrainHeight(const CCPosition & point) const
     unsigned char encodedHeight = info.terrain_height.data[pointI.x + ((info.height - 1) - pointI.y) * info.width];
     float decodedHeight = -100.0f + 200.0f * float(encodedHeight) / 255.0f;
     return decodedHeight;
-#else
-    return 0;
-#endif
 }
 
 
 void MapTools::draw() const
 {
-#ifdef SC2API
     CCPosition camera = m_bot.Observation()->GetCameraPos();
     int sx = (int)(camera.x - 12.0f);
     int sy = (int)(camera.y - 8);
     int ex = sx + 24;
     int ey = sy + 20;
-
-#else
-    BWAPI::TilePosition screen(BWAPI::Broodwar->getScreenPosition());
-    int sx = screen.x;
-    int sy = screen.y;
-    int ex = sx + 20;
-    int ey = sy + 15;
-#endif
 
     for (int x = sx; x < ex; ++x)
     {

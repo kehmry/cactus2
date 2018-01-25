@@ -159,8 +159,8 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>C:\Libraries\SC2AI\sc2api_precompiled\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Libraries\SC2AI\sc2api_precompiled\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\s2client-api\project\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\s2client-api\project\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Libraries\BWAPI_420\lib;$(LibraryPath)</LibraryPath>
@@ -169,8 +169,8 @@
     <OutDir>$(ProjectDir)/../bin/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Libraries\SC2AI\sc2api_precompiled\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Libraries\SC2AI\sc2api_precompiled\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\D\Desktop\SC2 AI\s2client-api\project\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\D\Desktop\SC2 AI\s2client-api\project\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Libraries\BWAPI_420\lib;$(LibraryPath)</LibraryPath>

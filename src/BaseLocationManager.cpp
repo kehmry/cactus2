@@ -30,10 +30,6 @@ void BaseLocationManager::onStart()
             continue;
         }
 
-#ifndef SC2API
-        // for BWAPI we have to eliminate minerals that have low resource counts
-        if (mineral.getUnitPtr()->getResources() < 100) { continue; }
-#endif
 
         bool foundCluster = false;
         for (auto & cluster : resourceClusters)
@@ -256,11 +252,7 @@ BaseLocation * BaseLocationManager::getBaseLocation(const CCPosition & pos) cons
 {
     if (!m_bot.Map().isValidPosition(pos)) { return nullptr; }
 
-#ifdef SC2API
     return m_tileBaseLocations[(int)pos.x][(int)pos.y];
-#else
-    return m_tileBaseLocations[pos.x / 32][pos.y / 32];
-#endif
 }
 
 void BaseLocationManager::drawBaseLocations()

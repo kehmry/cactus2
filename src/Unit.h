@@ -11,25 +11,15 @@ class Unit
     CCUnitID    m_unitID;
     UnitType    m_unitType;
 
-#ifdef SC2API
     const sc2::Unit * m_unit;
-#else
-    BWAPI::Unit m_unit;
-#endif
 
 public:
 
     Unit();
 
-#ifdef SC2API
     Unit(const sc2::Unit * unit, CCBot & bot);
     const sc2::Unit * getUnitPtr() const;
     const sc2::UnitTypeID & getAPIUnitType() const;
-#else
-    Unit(const BWAPI::Unit unit, CCBot & bot);
-    const BWAPI::Unit getUnitPtr() const;
-    const BWAPI::UnitType & getAPIUnitType() const;
-#endif
 
     bool operator < (const Unit & rhs) const;
     bool operator == (const Unit & rhs) const;
