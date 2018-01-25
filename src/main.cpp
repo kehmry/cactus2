@@ -77,9 +77,8 @@ int main(int argc, char* argv[])
 	coordinator.StartGame(mapString);
 
 	// Step forward the game simulation.
-	while (true)
+	while (coordinator.Update())
 	{
-		coordinator.Update();
 	}
 
 	return 0;
