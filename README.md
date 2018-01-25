@@ -1,7 +1,6 @@
 # Modified CommandCenter for the Starcraft 2 AI Ladder
 
 I modified CommandCenter to be able to participate in the [Starcraft 2 AI Ladder](http://sc2ai.net/index.php?season=5). The description you find below is partially out of date. I will update it hopefully in a few days.
-
 # CommandCenter: AI Bot for Broodwar and Starcraft II
 
 CommandCenter is a StarCraft AI bot that can play both StarCraft: Broodwar and StarCraft 2.
