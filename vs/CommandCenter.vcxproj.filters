@@ -229,5 +229,6 @@
     <ClInclude Include="..\src\Condition.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\LadderInterface.h" />
   </ItemGroup>
 </Project>

@@ -74,6 +74,7 @@
     <ClInclude Include="..\src\DistanceMap.h" />
     <ClInclude Include="..\src\GameCommander.h" />
     <ClInclude Include="..\src\JSONTools.h" />
+    <ClInclude Include="..\src\LadderInterface.h" />
     <ClInclude Include="..\src\MapTools.h" />
     <ClInclude Include="..\src\MeleeManager.h" />
     <ClInclude Include="..\src\MetaType.h" />
