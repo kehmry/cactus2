@@ -134,7 +134,7 @@ int main(int argc, char* argv[]) {
 	}
 
 
-	RunBot(argc, argv, new CCBot(), sc2::Race::Protoss);
+	RunBot(argc, argv, new CCBot(), sc2::Race::PleaseSpecify);
 	return 0;
 }
 #endif // !LADDEREXE
