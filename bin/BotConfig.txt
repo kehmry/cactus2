@@ -8,7 +8,7 @@
     
     "SC2API" :
     {
-        "BotRace"                   : "Protoss",
+        "BotRace"                   : "Zerg",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "InterloperLE.SC2Map",

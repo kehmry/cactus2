@@ -101,20 +101,26 @@ void ProductionManager::fixBuildOrderDeadlock()
     BuildOrderItem & currentItem = m_queue.getHighestPriorityItem();
 
     // check to see if we have the prerequisites for the topmost item
-    bool hasRequired = m_bot.Data(currentItem.type).requiredUnits.empty();
-    for (auto & required : m_bot.Data(currentItem.type).requiredUnits)
+    bool hasRequired = true;
+	const auto requiredUnits = m_bot.Data(currentItem.type).requiredUnits;
+	uint8_t idx = 0;
+    for (;idx<requiredUnits.size();++idx)
     {
-        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, required, false) > 0 || m_buildingManager.isBeingBuilt(required))
+        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, requiredUnits[idx], false) == 0 && !m_buildingManager.isBeingBuilt(requiredUnits[idx]))
         {
-            hasRequired = true;
+			if (requiredUnits[idx].getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY && m_bot.UnitInfo().getUnitTypeCount(Players::Self, UnitType(sc2::UNIT_TYPEID::PROTOSS_WARPGATE, m_bot), false) > 0)
+			{
+				continue;
+			}
+            hasRequired = false;
             break;
         }
     }
 
     if (!hasRequired)
     {
-        std::cout << currentItem.type.getName() << " needs " << m_bot.Data(currentItem.type).requiredUnits[0].getName() << "\n";
-        m_queue.queueAsHighestPriority(MetaType(m_bot.Data(currentItem.type).requiredUnits[0], m_bot), true);
+        std::cout << currentItem.type.getName() << " needs " << m_bot.Data(currentItem.type).requiredUnits[idx].getName() << "\n";
+        m_queue.queueAsHighestPriority(MetaType(m_bot.Data(currentItem.type).requiredUnits[idx], m_bot), true);
         fixBuildOrderDeadlock();
         return;
     }
@@ -290,8 +296,7 @@ bool ProductionManager::meetsReservedResources(const MetaType & type)
     // return whether or not we meet the resources
     int minerals = m_bot.Data(type).mineralCost;
     int gas = m_bot.Data(type).gasCost;
-
-    return (m_bot.Data(type).mineralCost <= getFreeMinerals()) && (m_bot.Data(type).gasCost <= getFreeGas());
+    return (minerals <= getFreeMinerals()) && (gas <= getFreeGas());
 }
 
 void ProductionManager::drawProductionInformation()
