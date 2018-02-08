@@ -75,7 +75,25 @@ void UnitData::removeBadUnits()
 
 bool UnitData::badUnitInfo(const UnitInfo & ui) const
 {
-    return !ui.unit.isAlive();
+    if (!ui.unit.isAlive())
+	{
+		return true;
+	}
+	//For enemy buildings
+	if (ui.player == Players::Enemy && ui.type.isBuilding())
+	{
+		//That should be visible
+		if (ui.unit.isPosVisible())
+		{
+			//but there is no building
+			if (!ui.unit.isVisible())
+			{
+				//are dead
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 int UnitData::getGasLost() const

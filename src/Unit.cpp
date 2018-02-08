@@ -247,3 +247,8 @@ bool Unit::isConstructing(const UnitType & type) const
     sc2::AbilityID buildAbility = m_bot->Data(type).buildAbility;
     return (getUnitPtr()->orders.size() > 0) && (getUnitPtr()->orders[0].ability_id == buildAbility);
 }
+
+bool Unit::isPosVisible() const
+{
+	return m_bot->Observation()->GetVisibility(getPosition()) == sc2::Visibility::Visible;
+}

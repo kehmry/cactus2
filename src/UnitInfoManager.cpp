@@ -240,6 +240,7 @@ void UnitInfoManager::drawUnitInformation() const
 void UnitInfoManager::updateUnit(const Unit & unit)
 {
     m_unitData[unit.getPlayer()].updateUnit(unit);
+	//Check for enemy buildings that we should see
 }
 
 // is the unit valid?
@@ -288,6 +289,7 @@ const UnitData & UnitInfoManager::getUnitData(CCPlayer player) const
 
 void UnitInfoManager::checkPositions(const int player)
 {
+	auto test = getUnitData(player).getUnitInfoMap();
 	for (const auto & kv : getUnitData(player).getUnitInfoMap())
 	{
 		//If the last known position is visible
@@ -296,16 +298,8 @@ void UnitInfoManager::checkPositions(const int player)
 			//And the unit is not visible
 			if (!kv.first.isVisible())
 			{
-				//A building is probably dead
-				if (kv.second.type.isBuilding())
-				{
-					m_unitData[kv.first.getPlayer()].killUnit(kv.first);
-				}
-				//for units we just lost the position
-				else
-				{
-					m_unitData[kv.first.getPlayer()].lostUnit(kv.first);
-				}
+				// we just lost the position
+				m_unitData[kv.first.getPlayer()].lostUnit(kv.first);
 			}
 		}
 	}

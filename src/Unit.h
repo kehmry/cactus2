@@ -47,6 +47,7 @@ public:
     bool isValid() const;
     bool isTraining() const;
     bool isConstructing(const UnitType & type) const;
+	bool isPosVisible() const;
 	bool isVisible() const;
 
     void stop           () const;
