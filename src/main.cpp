@@ -133,8 +133,8 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 
-
-	RunBot(argc, argv, new CCBot(), sc2::Race::PleaseSpecify);
+	
+	RunBot(argc, argv, new CCBot(), Util::GetRaceFromString(botRaceString));
 	return 0;
 }
 #endif // !LADDEREXE
