@@ -13,6 +13,7 @@ namespace Util
     CCPosition      GetPosition(const CCTilePosition & tile);
     std::string     GetStringFromRace(const CCRace & race);
     bool            UnitCanMetaTypeNow(const Unit & unit, const UnitType & type, CCBot & m_bot);
+	std::vector<UnitType> getEquivalentTypes(const UnitType unit, CCBot & bot);
     UnitType        GetTownHall(const CCRace & race, CCBot & bot);
     UnitType        GetRefinery(const CCRace & race, CCBot & bot);
     UnitType        GetSupplyProvider(const CCRace & race, CCBot & bot);

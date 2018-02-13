@@ -185,6 +185,36 @@ bool Util::UnitCanMetaTypeNow(const Unit & unit, const UnitType & type, CCBot & 
     return false;
 }
 
+std::vector<UnitType> Util::getEquivalentTypes(const UnitType unit, CCBot & m_bot)
+{
+	switch (unit.getAPIUnitType().ToType())
+	{
+		//Protoss
+	case (sc2::UNIT_TYPEID::PROTOSS_GATEWAY):
+		return { unit,UnitType(sc2::UNIT_TYPEID::PROTOSS_WARPGATE, m_bot) };
+		//Terran
+	case (sc2::UNIT_TYPEID::TERRAN_COMMANDCENTER):
+		return { unit, UnitType(sc2::UNIT_TYPEID::TERRAN_COMMANDCENTERFLYING, m_bot), UnitType(sc2::UNIT_TYPEID::TERRAN_PLANETARYFORTRESS, m_bot), UnitType(sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMAND, m_bot), UnitType(sc2::UNIT_TYPEID::TERRAN_ORBITALCOMMANDFLYING, m_bot) };
+	case (sc2::UNIT_TYPEID::TERRAN_BARRACKS):
+		return  { unit, UnitType(sc2::UNIT_TYPEID::TERRAN_BARRACKSFLYING, m_bot) };
+	case (sc2::UNIT_TYPEID::TERRAN_FACTORY):
+		return  { unit, UnitType(sc2::UNIT_TYPEID::TERRAN_FACTORYFLYING, m_bot) };
+	case (sc2::UNIT_TYPEID::TERRAN_STARPORT):
+		return  { unit, UnitType(sc2::UNIT_TYPEID::TERRAN_STARPORTFLYING, m_bot) };
+	case (sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOT):
+		return  { unit, UnitType(sc2::UNIT_TYPEID::TERRAN_SUPPLYDEPOTLOWERED, m_bot) };
+		//Zerg
+	case (sc2::UNIT_TYPEID::ZERG_HATCHERY):
+		return  { unit, UnitType(sc2::UNIT_TYPEID::ZERG_LAIR, m_bot), UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) };
+	case (sc2::UNIT_TYPEID::ZERG_LAIR):
+		return  { unit,UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) };
+	case (sc2::UNIT_TYPEID::ZERG_SPIRE):
+		return  { unit,UnitType(sc2::UNIT_TYPEID::ZERG_GREATERSPIRE, m_bot) };
+	}
+	
+	return { unit };
+}
+
 #ifndef LADDEREXE
 std::string Util::ExePath()
 {

@@ -106,12 +106,9 @@ void ProductionManager::fixBuildOrderDeadlock()
 	uint8_t idx = 0;
     for (;idx<requiredUnits.size();++idx)
     {
-        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, requiredUnits[idx], false) == 0 && !m_buildingManager.isBeingBuilt(requiredUnits[idx]))
+		std::vector<UnitType> equivalentRequiredUnits = Util::getEquivalentTypes(requiredUnits[idx], m_bot);
+        if (m_bot.UnitInfo().getUnitTypeCount(Players::Self, equivalentRequiredUnits, false) == 0 && !m_buildingManager.isBeingBuilt(requiredUnits[idx]))
         {
-			if (requiredUnits[idx].getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY && m_bot.UnitInfo().getUnitTypeCount(Players::Self, UnitType(sc2::UNIT_TYPEID::PROTOSS_WARPGATE, m_bot), false) > 0)
-			{
-				continue;
-			}
             hasRequired = false;
             break;
         }

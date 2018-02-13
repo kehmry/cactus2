@@ -195,6 +195,23 @@ size_t UnitInfoManager::getUnitTypeCount(CCPlayer player, UnitType type, bool co
     return count;
 }
 
+size_t UnitInfoManager::getUnitTypeCount(CCPlayer player, std::vector<UnitType> types, bool completed) const
+{
+	size_t count = 0;
+	for (auto & unit : getUnits(player))
+	{
+		for (const auto & type : types)
+		{
+			if ((!type.isValid() || type == unit.getType()) && (!completed || unit.isCompleted()))
+			{
+				count++;
+			}
+		}
+	}
+
+	return count;
+}
+
 void UnitInfoManager::drawUnitInformation() const
 {
 	if (m_bot.Config().DrawEnemyUnitInfo)
