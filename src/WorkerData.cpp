@@ -41,7 +41,7 @@ void WorkerData::updateAllWorkerData()
     for (auto worker : getWorkers())
     {
         // TODO: for now skip gas workers because they disappear inside refineries, this is annoying
-        if (!worker.isValid() && (getWorkerJob(worker) != WorkerJobs::Gas))
+        if ((!worker.isValid() && (getWorkerJob(worker) != WorkerJobs::Gas)) || !worker.isAlive())
         {
             workersDestroyed.push_back(worker);
         }
