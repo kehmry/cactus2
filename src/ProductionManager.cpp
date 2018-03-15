@@ -135,8 +135,12 @@ void ProductionManager::fixBuildOrderDeadlock()
 
     if (!hasProducer)
     {
-        m_queue.queueAsHighestPriority(MetaType(m_bot.Data(currentItem.type).whatBuilds[0], m_bot), true);
-        fixBuildOrderDeadlock();
+		//No worker and no main building => cyclic deadlock
+		if (MetaType(m_bot.Data(MetaType(m_bot.Data(currentItem.type).whatBuilds[0], m_bot)).whatBuilds[0], m_bot) != currentItem.type)
+		{
+			m_queue.queueAsHighestPriority(MetaType(m_bot.Data(currentItem.type).whatBuilds[0], m_bot), true);
+			fixBuildOrderDeadlock();
+		}
     }
 
     // build a refinery if we don't have one and the thing costs gas

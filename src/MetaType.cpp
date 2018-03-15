@@ -57,6 +57,16 @@ MetaType::MetaType(const CCUpgrade & upgradeType, CCBot & bot)
     m_name          = sc2::UpgradeIDToName(upgradeType);
 }
 
+bool MetaType::operator==(const MetaType &b) const
+{
+	return m_unitType == b.m_unitType;
+}
+
+bool MetaType::operator!=(const MetaType &b) const
+{
+	return m_unitType != b.m_unitType;
+}
+
 bool MetaType::isBuilding() const
 {
     return isUnit() && getUnitType().isBuilding();

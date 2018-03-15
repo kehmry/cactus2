@@ -26,6 +26,10 @@ public:
     MetaType(const UnitType & unitType, CCBot & bot);
     MetaType(const CCUpgrade & upgradeType, CCBot & bot);
 
+	bool operator ==(const MetaType &b) const;
+
+	bool operator!=(const MetaType & b) const;
+
     bool    isUnit()        const;
     bool    isUpgrade()     const;
     bool    isTech()        const;
