@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
 	if (config.length() == 0)
 	{
 		std::cerr << "Config file could not be found, and is required for starting the bot\n";
+		std::cerr << "File: " << configPath << "\n";
 		std::cerr << "Please read the instructions and try again\n";
 		while (true);
 		exit(-1);

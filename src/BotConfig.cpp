@@ -1,5 +1,6 @@
 #include "BotConfig.h"
 #include "JSONTools.h"
+#include "Util.h"
 #include <iostream>
 
 BotConfig::BotConfig()
@@ -53,6 +54,7 @@ BotConfig::BotConfig()
 
 void BotConfig::readConfigFile()
 {
+	ConfigFileLocation = Util::ExePath() + "\\BotConfig.txt";
     std::string config = JSONTools::ReadFile(ConfigFileLocation);
     if (config.length() == 0)
     {
@@ -64,7 +66,6 @@ void BotConfig::readConfigFile()
         ConfigFileFound = false;
         return;
     }
-
     std::ifstream file(ConfigFileLocation);
     json j;
     file >> j;
