@@ -54,7 +54,7 @@ BotConfig::BotConfig()
 
 void BotConfig::readConfigFile()
 {
-	ConfigFileLocation = Util::ExePath() + "\\BotConfig.txt";
+	ConfigFileLocation = Util::ExePath() + "/BotConfig.txt";
     std::string config = JSONTools::ReadFile(ConfigFileLocation);
     if (config.length() == 0)
     {
