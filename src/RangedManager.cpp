@@ -39,13 +39,29 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
             if (!rangedUnitTargets.empty())
             {
                 // find the best target for this meleeUnit
-                Unit target = getTarget(rangedUnit, rangedUnitTargets);
+                auto targetDist= getTarget(rangedUnit, rangedUnitTargets);
+				Unit target = targetDist.first;
+				float dist = targetDist.second;
 
                 // attack it
-                if (m_bot.Config().KiteWithRangedUnits)
-                {
-                    // TODO: implement kiting
-                    rangedUnit.attackUnit(target);
+				if (m_bot.Config().KiteWithRangedUnits)
+				{
+					auto range = rangedUnit.getType().getAttackRange() ;
+
+					float cooldown = rangedUnit.getWeaponCooldown();
+
+					if (dist < range - 1.0f && cooldown > 0)
+					{
+						auto myPos = rangedUnit.getPosition();
+						auto enemyPos = target.getPosition();
+						auto pos = myPos - enemyPos;
+						pos.operator*= (range / dist);
+						rangedUnit.move(pos + enemyPos);
+					}
+					else
+					{
+						rangedUnit.attackUnit(target);
+					}
                 }
                 else
                 {
@@ -73,12 +89,12 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
 
 // get a target for the ranged unit to attack
 // TODO: this is the melee targeting code, replace it with something better for ranged units
-Unit RangedManager::getTarget(const Unit & rangedUnit, const std::vector<Unit> & targets)
+std::pair<Unit,float> RangedManager::getTarget(const Unit & rangedUnit, const std::vector<Unit> & targets)
 {
     BOT_ASSERT(rangedUnit.isValid(), "null melee unit in getTarget");
 
     int highPriority = 0;
-    double closestDist = std::numeric_limits<double>::max();
+    float closestDist = std::numeric_limits<float>::max();
     Unit closestTarget;
 
     // for each target possiblity
@@ -98,7 +114,7 @@ Unit RangedManager::getTarget(const Unit & rangedUnit, const std::vector<Unit> &
         }
     }
 
-    return closestTarget;
+	return { closestTarget, closestDist };
 }
 
 // get the attack priority of a type in relation to a zergling

@@ -223,7 +223,7 @@ void WorkerManager::drawResourceDebugInfo()
         if (depot.isValid())
         {
             m_bot.Map().drawLine(worker.getPosition(), depot.getPosition());
-        }
+        }	
     }
 }
 
@@ -241,8 +241,9 @@ void WorkerManager::drawWorkerInformation()
 
     for (auto & worker : m_workerData.getWorkers())
     {
-        ss << m_workerData.getJobCode(worker) << " " << worker.getID() << "\n";
-
+        ss << m_workerData.getJobCode(worker) << " " << std::hex <<  worker.getID()  << std::dec
+			<< "\n";
+		
         m_bot.Map().drawText(worker.getPosition(), m_workerData.getJobCode(worker));
     }
 

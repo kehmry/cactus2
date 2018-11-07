@@ -8,7 +8,7 @@
     
     "SC2API" :
     {
-        "BotRace"                   : "Zerg",
+        "BotRace"                   : "Terran",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "InterloperLE.SC2Map",
@@ -17,7 +17,7 @@
         
     "Micro" :
     {
-        "KiteWithRangedUnits"       : false,
+        "KiteWithRangedUnits"       : true,
         "ScoutHarassEnemy"          : true
     },
     
@@ -31,18 +31,18 @@
     "Debug" :
     {
         "DrawGameInfo"              : true, 
-        "DrawProductionInfo"        : true, 
-        "DrawBaseLocationInfo"      : true,
+        "DrawProductionInfo"        : false, 
+        "DrawBaseLocationInfo"      : false,
         "DrawTileInfo"              : false,
         "DrawWalkableSectors"       : false,
-        "DrawScoutInfo"             : false,
+        "DrawScoutInfo"             : true,
         "DrawSelfUnitInfo"         	: true,
         "DrawEnemyUnitInfo"         : true,
         "DrawResourceInfo"          : false,
-        "DrawUnitTargetInfo"        : false,
+        "DrawUnitTargetInfo"        : true,
         "DrawLastSeenTileInfo"      : false,
         "DrawSquadInfo"             : false,
-        "DrawWorkerInfo"            : false,
+        "DrawWorkerInfo"            : true,
         "DrawBuildingInfo"          : false,
         "DrawReservedBuildingTiles" : false
     },
@@ -55,7 +55,7 @@
     "SC2API Strategy" :
     {
         "Protoss"                   : "Protoss_ZealotRush",
-        "Terran"                    : "Terran_MarineRush",
+        "Terran"                    : "Terran_ReaperFE",
         "Zerg"                      : "Zerg_ZerglingRush",
         
         "ScoutHarassEnemy"          : true,
@@ -75,6 +75,13 @@
                 "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Barracks", "Barracks", "Barracks", "SupplyDepot", "SupplyDepot", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine"],
                 "ScoutCondition"    : [ ["Self", "SupplyDepot"], ">", [ 0 ] ],
                 "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 8 ] ]
+            },
+            "Terran_ReaperFE"     : 
+            { 
+                "Race"              : "Terran",  
+                "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Refinery", "SCV", "SCV", "SCV", "Reaper", "CommandCenter", "SupplyDepot", "SCV", "Reaper", "Barracks", "Barracks", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine"],
+                "ScoutCondition"    : [ ["Self", "SupplyDepot"], ">", [ 0 ] ],
+                "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 4 ] ]
             },
             "Zerg_ZerglingRush"     : 
             { 
