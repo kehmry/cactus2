@@ -61,4 +61,5 @@ public:
     void buildTarget    (const UnitType & buildingType, const Unit & target) const;
     void train          (const UnitType & buildingType) const;
     void morph          (const UnitType & type) const;
+	void research       (const CCUpgrade& upgrade) const;
 };

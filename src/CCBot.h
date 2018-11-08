@@ -33,12 +33,14 @@ class CCBot : public sc2::Agent
     void OnError(const std::vector<sc2::ClientError> & client_errors, 
                  const std::vector<std::string> & protocol_errors = {}) override;
 
+
 public:
 
     CCBot();
 
     void OnGameStart() override;
     void OnStep() override;
+	void OnGameEnd() override;
 
           BotConfig & Config();
           WorkerManager & Workers();
@@ -61,4 +63,5 @@ public:
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
+	
 };

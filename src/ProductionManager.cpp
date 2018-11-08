@@ -32,12 +32,30 @@ void ProductionManager::onFrame()
     fixBuildOrderDeadlock();
     manageBuildOrderQueue();
 
-    // TODO: if nothing is currently building, get a new goal from the strategy manager
+    
+	RefreshQueue();
     // TODO: detect if there's a build order deadlock once per second
     // TODO: triggers for game things like cloaked units etc
 
     m_buildingManager.onFrame();
     drawProductionInformation();
+}
+
+void ProductionManager::RefreshQueue()
+{
+	// TODO: if nothing is currently building, get a new goal from the strategy manager
+	if (!m_queue.isEmpty())
+	{
+		return;
+	}
+
+	auto goal = m_bot.Strategy().getBuildOrderGoal();
+	for (auto&& item : goal)
+	{
+		for (int i = 0; i < item.second; ++i) {
+			m_queue.queueAsLowestPriority({ item.first, m_bot }, false);
+		}
+	}
 }
 
 // on unit destroy
@@ -228,6 +246,10 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
         {
             producer.morph(item.type.getUnitType());
         }
+		else if (item.type.getUnitType().isAddon())
+		{
+			producer.train(item.type.getUnitType());
+		}
         else
         {
             m_buildingManager.addBuildingTask(item.type.getUnitType(), Util::GetTilePosition(m_bot.GetStartLocation()));
@@ -242,6 +264,7 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
     {
         // TODO: UPGRADES
         //Micro::SmartAbility(producer, m_bot.Data(item.type.getUpgradeID()).buildAbility, m_bot);
+		producer.research(item.type.getUpgrade());
     }
 }
 

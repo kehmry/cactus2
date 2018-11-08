@@ -21,6 +21,7 @@ public:
     bool operator < (const UnitType & rhs) const;
     bool operator == (const UnitType & rhs) const;
 	bool operator!=(const UnitType & rhs) const;
+	
 
     std::string getName() const;
     CCRace getRace() const;
@@ -58,3 +59,13 @@ public:
     bool isQueen() const;
     bool isTank() const;
 };
+
+inline bool operator==(const UnitType& lhs, const sc2::UnitTypeID& rhs)
+{
+	return lhs.is(rhs);
+}
+
+inline bool operator==(const sc2::UnitTypeID& lhs, const UnitType& rhs)
+{
+	return rhs.is(lhs);
+}

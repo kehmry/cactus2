@@ -48,7 +48,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
 				{
 					auto range = rangedUnit.getType().getAttackRange() ;
 
-					float cooldown = rangedUnit.getWeaponCooldown();
+					int cooldown = rangedUnit.getWeaponCooldown();
 
 					if (dist < range - 1.0f && cooldown > 0)
 					{

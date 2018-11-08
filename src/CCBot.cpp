@@ -51,6 +51,15 @@ void CCBot::OnStep()
 #endif
 }
 
+void CCBot::OnGameEnd()
+{
+	for (auto&& result : Observation()->GetResults())
+	{
+		//result.player_id
+		//result.result / GameResult::Win, 
+	}
+}
+
 void CCBot::setUnits()
 {
     m_allUnits.clear();

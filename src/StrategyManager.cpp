@@ -25,7 +25,6 @@ Strategy::Strategy(const std::string & name, const CCRace & race, const BuildOrd
 StrategyManager::StrategyManager(CCBot & bot)
     : m_bot(bot)
 {
-
 }
 
 void StrategyManager::onStart()
@@ -74,6 +73,18 @@ void StrategyManager::addStrategy(const std::string & name, const Strategy & str
 
 const UnitPairVector StrategyManager::getBuildOrderGoal() const
 {
+	auto playerId = m_bot.Observation()->GetPlayerID();
+	auto myRace = m_bot.GetPlayerRace(playerId);
+
+	switch (myRace)
+	{
+	case CCRace::Terran:
+		return getTerranBuildOrderGoal();
+	case CCRace::Protoss:
+		return getProtossBuildOrderGoal();
+	case CCRace::Zerg:
+		return getZergBuildOrderGoal();
+	}
     return std::vector<UnitPair>();
 }
 
@@ -84,7 +95,11 @@ const UnitPairVector StrategyManager::getProtossBuildOrderGoal() const
 
 const UnitPairVector StrategyManager::getTerranBuildOrderGoal() const
 {
-    return std::vector<UnitPair>();
+	UnitPairVector units;
+	units.emplace_back(UnitType{sc2::UNIT_TYPEID::TERRAN_MARINE, m_bot}, 10);
+	units.emplace_back(UnitType{ sc2::UNIT_TYPEID::TERRAN_MARAUDER, m_bot }, 4);
+	units.emplace_back(UnitType{ sc2::UNIT_TYPEID::TERRAN_MEDIVAC, m_bot }, 2);
+	return units;
 }
 
 const UnitPairVector StrategyManager::getZergBuildOrderGoal() const

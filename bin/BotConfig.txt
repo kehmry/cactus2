@@ -31,7 +31,7 @@
     "Debug" :
     {
         "DrawGameInfo"              : true, 
-        "DrawProductionInfo"        : false, 
+        "DrawProductionInfo"        : true, 
         "DrawBaseLocationInfo"      : false,
         "DrawTileInfo"              : false,
         "DrawWalkableSectors"       : false,
@@ -79,9 +79,17 @@
             "Terran_ReaperFE"     : 
             { 
                 "Race"              : "Terran",  
-                "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Refinery", "SCV", "SCV", "SCV", "Reaper", "CommandCenter", "SupplyDepot", "SCV", "Reaper", "Barracks", "Barracks", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine"],
+                "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Refinery", "SCV", "SCV", "SCV", "Reaper", "CommandCenter", "SupplyDepot", "SCV", "Reaper", "Barracks", "Barracks", "Marine" ],
                 "ScoutCondition"    : [ ["Self", "SupplyDepot"], ">", [ 0 ] ],
-                "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 4 ] ]
+                "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 8 ] ]
+            },
+            
+            "Terran_Test"     : 
+            { 
+                "Race"              : "Terran",  
+                "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Marauder", "PunisherGrenades" ],
+                "ScoutCondition"    : [ ["Self", "SupplyDepot"], ">", [ 0 ] ],
+                "AttackCondition"   : [ ["Self", "Marine"], ">=", [ 8 ] ]
             },
             "Zerg_ZerglingRush"     : 
             { 

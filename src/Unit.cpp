@@ -236,6 +236,12 @@ void Unit::train(const UnitType & type) const
     m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 }
 
+void Unit::research(const CCUpgrade& upgrade) const
+{
+	BOT_ASSERT(isValid(), "Unit is not valid");
+	m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(upgrade).buildAbility);
+}
+
 void Unit::morph(const UnitType & type) const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");

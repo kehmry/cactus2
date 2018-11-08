@@ -135,16 +135,6 @@ void BuildOrderQueue::removeCurrentHighestPriorityItem()
     m_lowestPriority  = m_queue.empty() ? 0 : m_lowestPriority;
 }
 
-size_t BuildOrderQueue::size()
-{
-    return m_queue.size();
-}
-
-bool BuildOrderQueue::isEmpty()
-{
-    return (m_queue.size() == 0);
-}
-
 BuildOrderItem BuildOrderQueue::operator [] (int i)
 {
     return m_queue[i];
