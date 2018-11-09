@@ -85,19 +85,19 @@ bool BuildingPlacer::canBuildHereWithSpace(int bx, int by, const Building & b, i
     }
 
     // if we can't build here, or space is reserved, or it's in the resource box, we can't build here
-    for (int x = startx; x < endx; x++)
-    {
-        for (int y = starty; y < endy; y++)
-        {
-            if (!b.type.isRefinery())
-            {
-                if (!buildable(b, x, y) || m_reserveMap[x][y])
-                {
-                    return false;
-                }
-            }
-        }
-    }
+	if (!b.type.isRefinery())
+	{
+		for (int x = startx; x < endx; x++)
+		{
+			for (int y = starty; y < endy; y++)
+			{
+				if (!buildable(b, x, y) || m_reserveMap[x][y])
+				{
+					return false;
+				}
+			}
+		}
+	}
 
     return true;
 }
@@ -193,6 +193,23 @@ void BuildingPlacer::reserveTiles(int bx, int by, int width, int height)
             m_reserveMap[x][y] = true;
         }
     }
+}
+
+void BuildingPlacer::reserveBuilding(int x, int y, const Building& building)
+{
+	int height = building.type.tileHeight();
+	int width = building.type.tileWidth();
+	if (building.type.couldBuildAddon()) {
+		width += 2;
+	}
+	int endx = x + width;
+	int endy = y + height;
+
+	for (int dx = x; dx < endx; ++dx) {
+		for (int dy = y; dy < endy; ++dy) {
+			m_reserveMap[dx][dy] = true;
+		}
+	}
 }
 
 void BuildingPlacer::drawReservedTiles()

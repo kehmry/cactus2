@@ -116,7 +116,9 @@ void BuildingManager::assignWorkersToUnassignedBuildings()
         }
 
         // reserve this building's space
-        m_buildingPlacer.reserveTiles((int)b.finalPosition.x, (int)b.finalPosition.y, b.type.tileWidth(), b.type.tileHeight());
+
+        //m_buildingPlacer.reserveTiles((int)b.finalPosition.x, (int)b.finalPosition.y, b.type.tileWidth(), b.type.tileHeight());
+		m_buildingPlacer.reserveBuilding((int)b.finalPosition.x, (int)b.finalPosition.y, b);
 
         b.status = BuildingStatus::Assigned;
     }

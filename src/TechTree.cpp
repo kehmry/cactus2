@@ -134,7 +134,7 @@ void TechTree::initUnitTypeData()
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_LAIR, m_bot)] =                       { sc2::Race::Zerg, 0, 0, 0, 0, true, true, false, false, false,  true, false, sc2::ABILITY_ID::MORPH_LAIR, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_HATCHERY, m_bot) }, {UnitType(sc2::UNIT_TYPEID::ZERG_SPAWNINGPOOL, m_bot)}, {} };
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot)] =                       { sc2::Race::Zerg, 0, 0, 0, 0, true, true, false, false, false,  true, false, sc2::ABILITY_ID::MORPH_HIVE, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LAIR, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_INFESTATIONPIT, m_bot) }, {} };  
 
-    // Zerg Units                                                                          m  g  s  t  unit  bld    wrk    rfn    sup    hall   add
+    // Zerg Units                                                                                           m  g  s  t  unit  build  worker refine supply depot  addon  buildAbility                     warp  what builds                                     reqUnit reqUpgrade          
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_OVERLORD, m_bot)] =                   { sc2::Race::Zerg, 0, 0, 0, 0, true, false, false, false,  true, false, false, sc2::ABILITY_ID::TRAIN_OVERLORD, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, {}, {} }; 
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_BANELING, m_bot)] =                   { sc2::Race::Zerg, 0, 0, 0, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_BANELING, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_BANELINGNEST, m_bot) }, {} }; 
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_CORRUPTOR, m_bot)] =                  { sc2::Race::Zerg, 0, 0, 2, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_CORRUPTOR, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_SPIRE, m_bot), UnitType(sc2::UNIT_TYPEID::ZERG_GREATERSPIRE, m_bot) }, {} };
@@ -148,8 +148,15 @@ void TechTree::initUnitTypeData()
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_VIPER, m_bot)] =                      { sc2::Race::Zerg, 0, 0, 3, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_VIPER, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) }, {} };
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_ZERGLING, m_bot)] =                   { sc2::Race::Zerg, 0, 0, 1, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_ZERGLING, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_SPAWNINGPOOL, m_bot) }, {} };
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_QUEEN, m_bot)] =                      { sc2::Race::Zerg, 0, 0, 2, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_QUEEN, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_HATCHERY, m_bot)}, { UnitType(sc2::UNIT_TYPEID::ZERG_SPAWNINGPOOL, m_bot) }, {} };
+
+	m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_OVERSEER, m_bot)] =                   { sc2::Race::Zerg, 0, 0, 0, 0, true, false, false, false, true,  false, false, sc2::ABILITY_ID::MORPH_OVERSEER, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_OVERLORD, m_bot)}, { UnitType(sc2::UNIT_TYPEID::ZERG_LAIR, m_bot) }, {} };
+	m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_RAVAGER, m_bot)] =                    { sc2::Race::Zerg, 0, 0, 2, 0, true, false, false, false, false, false, false, sc2::ABILITY_ID::TRAIN_ROACH, 0, { UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot) }, { UnitType(sc2::UNIT_TYPEID::ZERG_ROACHWARREN, m_bot) }, {} };
+
+
+
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_LARVA, m_bot)] =                      { sc2::Race::Zerg, 0, 0, 2, 0, true, false, false, false, false, false, false, 0, 0, { UnitType() }, { UnitType() }, {} };
     m_unitTypeData[UnitType(sc2::UNIT_TYPEID::ZERG_EGG, m_bot)] =                        { sc2::Race::Zerg, 0, 0, 2, 0, true, false, false, false, false, false, false, 0, 0, { UnitType() }, { UnitType() }, {} };
+
 
     // Set the Mineral / Gas cost of each unit
     for (auto & kv : m_unitTypeData)
@@ -157,9 +164,12 @@ void TechTree::initUnitTypeData()
         if (!kv.first.isValid()) { continue; }
         
         auto & data = m_bot.Observation()->GetUnitTypeData()[kv.first.getAPIUnitType()];
+		
+		
                 
         kv.second.mineralCost = data.mineral_cost;
         kv.second.gasCost     = data.vespene_cost;
+
     }
 
     // fix the cumulative prices of morphed buildings

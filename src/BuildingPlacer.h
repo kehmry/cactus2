@@ -35,6 +35,7 @@ public:
     void drawReservedTiles();
 
     void reserveTiles(int x, int y, int width, int height);
+	void reserveBuilding(int x, int y, const Building& building);
     void freeTiles(int x, int y, int width, int height);
     CCTilePosition getRefineryPosition();
 };
