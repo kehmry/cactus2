@@ -49,6 +49,7 @@ public:
     bool isConstructing(const UnitType & type) const;
 	bool isPosVisible() const;
 	bool isVisible() const;
+    bool couldBuildAddon() const;
 
     void stop           () const;
     void attackUnit     (const Unit & target) const;

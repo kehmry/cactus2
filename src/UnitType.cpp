@@ -261,6 +261,14 @@ bool UnitType::isTank() const
     return m_type == sc2::UNIT_TYPEID::TERRAN_SIEGETANK || m_type == sc2::UNIT_TYPEID::TERRAN_SIEGETANKSIEGED;
 }
 
+bool UnitType::couldBuildAddon() const
+{
+    return m_type == sc2::UNIT_TYPEID::TERRAN_BARRACKS
+        || m_type == sc2::UNIT_TYPEID::TERRAN_FACTORY
+        || m_type == sc2::UNIT_TYPEID::TERRAN_STARPORT
+        ;
+}
+
 bool UnitType::isMorphedBuilding() const
 {
     

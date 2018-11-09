@@ -58,6 +58,7 @@ public:
     bool isEgg() const;
     bool isQueen() const;
     bool isTank() const;
+    bool couldBuildAddon() const;
 };
 
 inline bool operator==(const UnitType& lhs, const sc2::UnitTypeID& rhs)

@@ -210,6 +210,9 @@ std::vector<UnitType> Util::getEquivalentTypes(const UnitType unit, CCBot & m_bo
 		return  { unit,UnitType(sc2::UNIT_TYPEID::ZERG_HIVE, m_bot) };
 	case (sc2::UNIT_TYPEID::ZERG_SPIRE):
 		return  { unit,UnitType(sc2::UNIT_TYPEID::ZERG_GREATERSPIRE, m_bot) };
+
+    default:
+        return { unit };
 	}
 	
 	return { unit };

@@ -73,6 +73,10 @@ bool BuildingPlacer::canBuildHereWithSpace(int bx, int by, const Building & b, i
     int endy   = by + height + buildDist;
 
     // TODO: recalculate start and end positions for addons
+    if (type.couldBuildAddon())
+    {
+        endx += 2;
+    }
 
     // if this rectangle doesn't fit on the map we can't build here
     if (startx < 0 || starty < 0 || endx > m_bot.Map().width() || endx < bx + width || endy > m_bot.Map().height())
@@ -106,7 +110,7 @@ CCTilePosition BuildingPlacer::getBuildLocationNear(const Building & b, int buil
     // get the precomputed vector of tile positions which are sorted closes to this location
     auto & closestToBuilding = m_bot.Map().getClosestTilesTo(b.desiredPosition);
 
-    double ms1 = t.getElapsedTimeInMilliSec();
+    //double ms1 = t.getElapsedTimeInMilliSec();
 
     // iterate through the list until we've found a suitable location
     for (size_t i(0); i < closestToBuilding.size() && i < 1000; ++i)
@@ -115,14 +119,14 @@ CCTilePosition BuildingPlacer::getBuildLocationNear(const Building & b, int buil
 
         if (canBuildHereWithSpace(pos.x, pos.y, b, buildDist))
         {
-            double ms = t.getElapsedTimeInMilliSec();
+            //double ms = t.getElapsedTimeInMilliSec();
             //printf("Building Placer Took %d iterations, lasting %lf ms @ %lf iterations/ms, %lf setup ms\n", (int)i, ms, (i / ms), ms1);
 
             return pos;
         }
     }
 
-    double ms = t.getElapsedTimeInMilliSec();
+    //double ms = t.getElapsedTimeInMilliSec();
     //printf("Building Placer Failure: %s - Took %lf ms\n", b.type.getName().c_str(), ms);
 
     return CCTilePosition(0, 0);

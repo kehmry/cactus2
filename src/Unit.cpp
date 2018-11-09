@@ -11,8 +11,8 @@ Unit::Unit()
 
 Unit::Unit(const sc2::Unit * unit, CCBot & bot)
     : m_bot(&bot)
-    , m_unit(unit)
     , m_unitID(unit->tag)
+    , m_unit(unit)
     , m_unitType(unit->unit_type, bot)
 {
     
@@ -122,6 +122,11 @@ bool Unit::isVisible() const
 	return m_bot->Observation()->GetUnit(m_unit->tag) && m_bot->Observation()->GetUnit(m_unit->tag)->display_type==sc2::Unit::DisplayType::Visible;
 }
 
+bool Unit::couldBuildAddon() const
+{
+    BOT_ASSERT(isValid(), "Unit is not valid");
+    return m_unitType.couldBuildAddon();
+}
 bool Unit::isBeingConstructed() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
