@@ -19,3 +19,4 @@ vs/RelWithDebInfo/CommandCenter.log
 *.log
 *.pdb
 build/bin/
+debug/
